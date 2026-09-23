@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Dashboard General";
+    var insumosCriticos = ViewBag.InsumosCriticos as List<MarroquineriaMarcani.Models.Insumo> ?? new List<MarroquineriaMarcani.Models.Insumo>();
+}
+
+<div class="mb-4">
+    <h2 class="brand-font">Panel Principal de Control</h2>
+    <p class="text-muted">Resumen en tiempo real del estado de producción, ventas e inventario.</p>
+</div>
+
+@if (insumosCriticos.Any())
+{
+    <div class="alert alert-stock-critico mb-4 p-3 rounded shadow-sm d-flex justify-content-between align-items-center">
+        <div>
+            <h5 class="mb-1"><i class="bi bi-exclamation-triangle-fill me-2"></i> ¡Alerta de Stock de Insumos!</h5>
+            <p class="mb-0">Hay <strong>@insumosCriticos.Count</strong> insumo(s) alcanzando o superando el límite mínimo de stock.</p>
+        </div>
+        <a asp-controller="Insumos" asp-action="Index" class="btn btn-sm btn-light fw-bold text-dark">
+            Ver Insumos
+        </a>
+    </div>
+}
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card card-custom p-3 border-start border-4 border-success">
+            <div class="text-muted small">Saldo en Caja</div>
+            <div class="fs-4 fw-bold text-success">@ViewBag.SaldoCaja.ToString("N2") BOB</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-custom p-3 border-start border-4 border-primary">
+            <div class="text-muted small">Total Ventas</div>
+            <div class="fs-4 fw-bold text-primary">@ViewBag.TotalVentas.ToString("N2") BOB</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-custom p-3 border-start border-4 border-info">
+            <div class="text-muted small">Productos Registrados</div>
+            <div class="fs-4 fw-bold">@ViewBag.TotalProductos u.</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-custom p-3 border-start border-4 border-danger">
+            <div class="text-muted small">Insumos en Alerta</div>
+            <div class="fs-4 fw-bold text-danger">@ViewBag.TotalInsumosAlerta</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card card-custom p-3 h-100">
+            <h5 class="brand-font mb-3"><i class="bi bi-box-seam me-2"></i> Insumos con Bajo Stock</h5>
+            @if (insumosCriticos.Any())
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in insumosCriticos)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+                            <span>@item.Nombre</span>
+                            <span class="badge bg-danger">@item.StockActual / Min: @item.StockMinimo @item.UnidadMedida</span>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">Todos los insumos se encuentran con stock suficiente.</p>
+            }
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-custom p-3 h-100">
+            <h5 class="brand-font mb-3"><i class="bi bi-rocket-takeoff me-2"></i> Accesos Rápidos</h5>
+            <div class="d-grid gap-2">
+                <a asp-controller="Ventas" asp-action="Index" class="btn btn-marcani text-start p-3">
+                    <i class="bi bi-cart-plus fs-5 me-2"></i> Registrar Nueva Venta
+                </a>
+                <a asp-controller="Insumos" asp-action="Index" class="btn btn-outline-secondary text-start p-3">
+                    <i class="bi bi-box-seam fs-5 me-2"></i> Reponer Insumos
+                </a>
+                <a asp-controller="FlujoCaja" asp-action="Index" class="btn btn-outline-secondary text-start p-3">
+                    <i class="bi bi-cash-stack fs-5 me-2"></i> Ver Movimientos de Caja
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
