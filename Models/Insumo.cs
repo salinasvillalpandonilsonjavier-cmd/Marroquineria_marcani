@@ -7,23 +7,23 @@ namespace MarroquineriaMarcani.Models
     public class Insumo
     {
         [Key]
-        [Column("id_insumo")]
+        [Column("Id_insumo")]
         public int IdInsumo { get; set; }
 
-        [Required]
-        [Column("nombre")]
+        [Required(ErrorMessage = "El nombre del insumo es obligatorio.")]
+        [Column("Nombre")]
         public string Nombre { get; set; } = string.Empty;
 
-        [Column("unidad_medida")]
-        public string? UnidadMedida { get; set; }
+        [Column("Stock_actual")]
+        public decimal StockActual { get; set; }
 
-        [Column("stock_actual")]
-        public int StockActual { get; set; }
+        [Column("Stock_minimo")]
+        public decimal StockMinimo { get; set; }
 
-        [Column("stock_minimo")]
-        public int StockMinimo { get; set; }
+        [Column("Unidad_medida")]
+        public string UnidadMedida { get; set; } = "Unidad";
 
-        [Column("costo_unitario")]
+        [Column("Costo_unitario")]
         public decimal CostoUnitario { get; set; }
     }
 }
