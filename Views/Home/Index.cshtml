@@ -5,7 +5,7 @@
 
 <div class="mb-4">
     <h2 class="brand-font">Panel Principal de Control</h2>
-    <p class="text-muted">Resumen en tiempo real del estado de producción, ventas e inventario.</p>
+    <p class="text-muted">Resumen en tiempo real del estado de producción e inventario.</p>
 </div>
 
 @if (insumosCriticos.Any())
@@ -21,26 +21,21 @@
     </div>
 }
 
+<!-- Tarjetas superiores -->
 <div class="row g-3 mb-4">
-    <div class="col-md-3">
-        <div class="card card-custom p-3 border-start border-4 border-success">
-            <div class="text-muted small">Saldo en Caja</div>
-            <div class="fs-4 fw-bold text-success">@ViewBag.SaldoCaja.ToString("N2") BOB</div>
-        </div>
-    </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="card card-custom p-3 border-start border-4 border-primary">
-            <div class="text-muted small">Total Ventas</div>
-            <div class="fs-4 fw-bold text-primary">@ViewBag.TotalVentas.ToString("N2") BOB</div>
+            <div class="text-muted small">Stock Total Disponible</div>
+            <div class="fs-4 fw-bold text-primary">@ViewBag.StockTotalProductos u.</div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card card-custom p-3 border-start border-4 border-info">
-            <div class="text-muted small">Productos Registrados</div>
-            <div class="fs-4 fw-bold">@ViewBag.TotalProductos u.</div>
+    <div class="col-md-4">
+        <div class="card card-custom p-3 border-start border-4 border-success">
+            <div class="text-muted small">Insumos Disponibles</div>
+            <div class="fs-4 fw-bold text-success">@ViewBag.TotalInsumos tipos</div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="card card-custom p-3 border-start border-4 border-danger">
             <div class="text-muted small">Insumos en Alerta</div>
             <div class="fs-4 fw-bold text-danger">@ViewBag.TotalInsumosAlerta</div>
@@ -48,6 +43,7 @@
     </div>
 </div>
 
+<!-- Listado de Insumos con Bajo Stock y Accesos Rápidos -->
 <div class="row g-4">
     <div class="col-md-6">
         <div class="card card-custom p-3 h-100">
@@ -58,7 +54,7 @@
                     @foreach (var item in insumosCriticos)
                     {
                         <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
-                            <span>@item.Nombre</span>
+                            <span class="text-capitalize">@item.Nombre</span>
                             <span class="badge bg-danger">@item.StockActual / Min: @item.StockMinimo @item.UnidadMedida</span>
                         </li>
                     }

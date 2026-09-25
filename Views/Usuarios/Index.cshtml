@@ -12,6 +12,21 @@
     </button>
 </div>
 
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-1"></i> @TempData["Exito"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle me-1"></i> @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <div class="card card-custom p-3">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
@@ -29,16 +44,30 @@
                     @foreach (var item in Model)
                     {
                         var nombreRol = roles.FirstOrDefault(r => r.IdRol == item.IdRol)?.NombreRol ?? "Sin Rol";
+                        var esUsuarioActual = item.Correo == User.Identity?.Name || item.NombreCompleto == User.Identity?.Name;
+
                         <tr>
                             <td class="fw-bold">@item.NombreCompleto</td>
                             <td>@item.Correo</td>
                             <td><span class="badge bg-secondary">@nombreRol</span></td>
                             <td class="text-center">
-                                <form asp-action="Eliminar" asp-route-id="@item.IdUsuario" method="post" class="d-inline" onsubmit="return confirm('¿Está seguro de eliminar este usuario?');">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+                                @if (esUsuarioActual)
+                                {
+                                    <!-- SI ES TU USUARIO ACTUAL: Se muestra esta etiqueta en vez del botón -->
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-person-check me-1"></i> Sesión Activa
+                                    </span>
+                                }
+                                else
+                                {
+                                    <!-- PARA OTROS USUARIOS (CONTADOR, FUTUROS USUARIOS): Se muestra el botón de eliminar -->
+                                    <form asp-action="Eliminar" asp-route-id="@item.IdUsuario" method="post" class="d-inline" onsubmit="return confirm('¿Está seguro de eliminar este usuario?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar Usuario">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                }
                             </td>
                         </tr>
                     }
@@ -54,6 +83,7 @@
     </div>
 </div>
 
+<!-- Modal Crear Usuario -->
 <div class="modal fade" id="modalCrearUsuario" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

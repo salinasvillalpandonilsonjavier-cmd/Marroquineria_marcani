@@ -15,6 +15,10 @@ namespace MarroquineriaMarcani.Data
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Venta> Ventas { get; set; }
         public DbSet<DetalleVenta> DetalleVentas { get; set; }
-        public DbSet<FlujoCaja> FlujosCaja { get; set; }
+        public DbSet<FlujoCaja> FlujoCaja { get; set; }
+public DbSet<FlujoCaja> FlujoCajas => FlujoCaja; // Alias de compatibilidad
+        public DbSet<ProductoInsumo> ProductoInsumo { get; set; }
+public DbSet<LibroDiario> LibroDiario { get; set; }
+public DbSet<Reporte> Reportes { get; set; }
     }
 }

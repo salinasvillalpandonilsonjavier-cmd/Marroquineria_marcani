@@ -102,37 +102,54 @@
         <div class="row">
             <nav class="col-md-3 col-lg-2 sidebar p-3 collapse d-md-block">
                 <ul class="nav flex-column">
+                    <!-- DASHBOARD (Visible para todos) -->
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Home" asp-action="Index">
                             <i class="bi bi-speedometer2 me-2"></i> Dashboard
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Insumos" asp-action="Index">
-                            <i class="bi bi-box-seam me-2"></i> Insumos
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Productos" asp-action="Index">
-                            <i class="bi bi-bag me-2"></i> Productos
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Ventas" asp-action="Index">
-                            <i class="bi bi-cart-check me-2"></i> Ventas
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="FlujoCaja" asp-action="Index">
-                            <i class="bi bi-cash-stack me-2"></i> Flujo de Caja
-                        </a>
-                    </li>
 
-                    @if (User.IsInRole("Administrador"))
+                    <!-- MENÚ PARA ADMINISTRADOR -->
+                    @if (User.IsInRole("Admin") || User.IsInRole("Administrador"))
                     {
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Usuarios" asp-action="Index">
                                 <i class="bi bi-people me-2"></i> Usuarios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Insumos" asp-action="Index">
+                                <i class="bi bi-box-seam me-2"></i> Insumos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Productos" asp-action="Index">
+                                <i class="bi bi-bag me-2"></i> Productos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Ventas" asp-action="Index">
+                                <i class="bi bi-cart-check me-2"></i> Ventas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Reportes" asp-action="Recibidos">
+                                <i class="bi bi-file-earmark-check me-2"></i> Reportes Recibidos
+                            </a>
+                        </li>
+                    }
+
+                    <!-- MENÚ PARA CONTADOR -->
+                    @if (User.IsInRole("Contador"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="FlujoCaja" asp-action="Index">
+                                <i class="bi bi-cash-stack me-2"></i> Flujo de Caja
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Reportes" asp-action="Enviar">
+                                <i class="bi bi-send me-2"></i> Enviar Reporte
                             </a>
                         </li>
                     }

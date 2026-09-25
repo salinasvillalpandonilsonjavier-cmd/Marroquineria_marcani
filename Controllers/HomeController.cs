@@ -5,7 +5,7 @@ using MarroquineriaMarcani.Data;
 
 namespace MarroquineriaMarcani.Controllers
 {
-    [Authorize] // <--- ESTO OBLIGA A IR AL LOGIN PRIMERO SI NO ESTÁS AUTENTICADO
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -17,17 +17,20 @@ namespace MarroquineriaMarcani.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Métricas y alertas estáticas/básicas para Sprint 1
-            ViewBag.SaldoCaja = 0.00m;
-            ViewBag.TotalVentas = 0.00m;
-            ViewBag.TotalProductos = 0;
-            ViewBag.TotalInsumosAlerta = 0;
+            // 1. Suma total de unidades físicas en stock de todos los productos (0 si no hay stock)
+            var stockTotalProductos = await _context.Productos.SumAsync(p => (int?)p.StockDisponible) ?? 0;
+            ViewBag.StockTotalProductos = stockTotalProductos;
 
+            // 2. Conteo de tipos de insumos registrados
+            ViewBag.TotalInsumos = await _context.Insumos.CountAsync();
+
+            // 3. Insumos críticos con bajo stock (StockActual <= StockMinimo)
             var insumosCriticos = await _context.Insumos
                 .Where(i => i.StockActual <= i.StockMinimo)
                 .ToListAsync();
 
             ViewBag.InsumosCriticos = insumosCriticos;
+            ViewBag.TotalInsumosAlerta = insumosCriticos.Count;
 
             return View();
         }
