@@ -26,7 +26,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
         }
         .login-header {
             background-color: #4A2C2A;
@@ -51,6 +51,15 @@
             background-color: #4A2C2A;
             color: #F5F5DC;
         }
+        .login-logo {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 3px solid #A67B5B;
+        }
     </style>
 </head>
 <body>
@@ -58,7 +67,10 @@
 <div class="login-card">
     <div class="login-header">
         <h1 class="brand-title">Marroquinería Marcani</h1>
-        <small>Sistema de Gestión</small>
+        <small class="d-block">Sistema de Gestión</small>
+        
+        <!-- LOGO EN TAMAÑO GRANDE -->
+        <img src="~/images/logo.jpeg" alt="Logo Marroquinería Marcani" class="login-logo" />
     </div>
     <div class="p-4">
         @if (ViewBag.Error != null)
